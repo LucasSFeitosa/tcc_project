@@ -1,0 +1,176 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0, maximum-scale = 1.0, user-scalable=0">
+    <title>DataLogger Config </title>
+    <style>
+        body {
+            background-color: #e1e1d0;
+            font-family: Arial, Helvetica, Sans-Serif;
+            Color: #000000;
+            position: relative;
+            min-height: 100%%;
+        }
+
+        .navbar {
+            min-height: 85px;
+            margin-top: 0px;
+            margin-bottom: 30px;
+            background: #000;
+            overflow: visible;
+            color: white;
+        }
+
+        .container {
+            max-width: 462px;
+            margin: 10px auto;
+            padding-left: 20px;
+            border: 1px solid #cccccc;
+            border-radius: 10px;
+            background-color: #fff;
+            text-align: center;
+        }
+
+        input {
+            border-radius: 5px;
+            color: black;
+        }
+
+        h1 {
+            float: left;
+            width: 400px;
+            height: 43px;
+            margin-left: 40px;
+            margin-top: 24px;
+        }
+
+        .myButton {
+            -moz-box-shadow: inset 0px 1px 3px 0px #91b8b3;
+            -webkit-box-shadow: inset 0px 1px 3px 0px #91b8b3;
+            box-shadow: inset 0px 1px 3px 0px #91b8b3;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #768d87), color-stop(1, #202929));
+            background: -moz-linear-gradient(top, #768d87 5%%, #202929 100%%);
+            background: -webkit-linear-gradient(top, #768d87 5%%, #202929 100%%);
+            background: -o-linear-gradient(top, #768d87 5%%, #202929 100%%);
+            background: -ms-linear-gradient(top, #768d87 5%%, #202929 100%%);
+            background: linear-gradient(to bottom, #768d87 5%%, #202929 100%%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#768d87', endColorstr='#202929', GradientType=0);
+            background-color: #768d87;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            border-radius: 5px;
+            border: 1px solid #566963;
+            display: inline-block;
+            cursor: pointer;
+            color: #ffffff;
+            font-family: Arial;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 5px 12px;
+            text-decoration: none;
+            text-shadow: 0px -1px 0px #2b665e;
+        }
+
+        margin-top: 10px;
+        margin-left: 20px;
+        margin-bottom: 5px;
+        text-align: center;
+
+        .myButton:hover {
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #202929), color-stop(1, #768d87));
+            background: -moz-linear-gradient(top, #202929 5%%, #768d87 100%%);
+            background: -webkit-linear-gradient(top, #202929 5%%, #768d87 100%%);
+            background: -o-linear-gradient(top, #202929 5%%, #768d87 100%%);
+            background: -ms-linear-gradient(top, #202929 5%%, #768d87 100%%);
+            background: linear-gradient(to bottom, #202929 5%%, #768d87 100%%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#202929', endColorstr='#768d87', GradientType=0);
+            background-color: #202929;
+        }
+
+        .myButton:active {
+            position: relative;
+            top: 1px;
+        }
+
+        label {
+            width: auto;
+            color: #000;
+            margin-right: 10px;
+            text-align: left;
+        }
+
+        .control-label1 {
+            padding-right: 10px;
+        }
+
+        .control-label2 {
+            padding-right: 33px;
+        }
+
+        .control-label3 {
+            padding-right: 46px;
+        }
+
+        .control-label4 {
+            padding-right: 116px;
+        }
+
+        .control-label5 {
+            padding-right: 138px;
+        }
+
+        .control-label6 {
+            padding-right: 44px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <h1>Config</h1>
+    </div>
+    <div id="exitButton">
+        <form action="/" method="get">
+            <button class="myButton" type="submit" style="position: absolute; left: 88%; top: 5%">Exit</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <FORM action="/saveConfig" method="post">
+            <P>
+            <h3>Operation Mode:</h3>
+            <select id="OP Modes" name="opMode">
+                <option value="Auto">Auto</option>
+                <option value="Manual">Manual</option>
+            </select>
+            <input class="myButton" type="submit" value="Save">
+            </P>
+        </FORM>
+    </div>
+    <div class="container">
+        <FORM action="/saveConfig" method="post">
+            <P>
+            <h3>WIFI Config:</h3>
+            <label class="control-label2">SSID:&nbsp;</label> <input maxlength="29" name="wifi-ssid"><br>
+            <label>Password:&nbsp;</label><input maxlength="14" name="wifi-password"><br>
+            <button class="myButton" type="submit">Save</button> 
+            <!-- <button class="myButton" type="reset">Reset</button> -->
+            </P>
+        </FORM>
+    </div>
+    <!-- <div class="container">
+        <FORM action="/saveConfig" method="post"> <br>
+            <h3>MQTT Server Config:</h3>
+            <label class="control-label3">Server Adress:&nbsp;</label> <input maxlength="19" name="mqtt-server"><br>
+            <label class="control-label4">PORT:&nbsp;</label><input maxlength="5" name="mqtt-port"><br>
+            <label class="control-label5">ID:&nbsp;</label> <input maxlength="19" name="mqtt-user-id"><br>
+            <label class="control-label6">User(Opcional):&nbsp;</label><input maxlength="29" name="mqtt-user"><br>
+            <label>Password(Opcional):&nbsp;</label> <input maxlength="14" name="mqtt-password"><br>
+            <button class="myButton" type="submit">Send</button> <button class="myButton" type="reset">Reset</button>
+        </FORM>
+    </div> -->
+</body>
+
+</html>

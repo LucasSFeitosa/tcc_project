@@ -1,0 +1,341 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <style>
+    body {
+      background: #b1adb1;
+      position: static;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      margin: 0;
+    }
+
+    h2 {
+      font-family: Arial;
+      font-size: 2.5rem;
+      text-align: center;
+    }
+
+    .myButton {
+      -moz-box-shadow: inset 0px 1px 3px 0px #91b8b3;
+      -webkit-box-shadow: inset 0px 1px 3px 0px #91b8b3;
+      box-shadow: inset 0px 1px 3px 0px #91b8b3;
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #768d87), color-stop(1, #202929));
+      background: -moz-linear-gradient(top, #768d87 5%%, #202929 100%%);
+      background: -webkit-linear-gradient(top, #768d87 5%%, #202929 100%%);
+      background: -o-linear-gradient(top, #768d87 5%%, #202929 100%%);
+      background: -ms-linear-gradient(top, #768d87 5%%, #202929 100%%);
+      background: linear-gradient(to bottom, #768d87 5%%, #202929 100%%);
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#768d87', endColorstr='#202929', GradientType=0);
+      background-color: #768d87;
+      -moz-border-radius: 5px;
+      -webkit-border-radius: 5px;
+      border-radius: 5px;
+      border: 1px solid #566963;
+      display: inline-block;
+      cursor: pointer;
+      color: #ffffff;
+      font-family: Arial;
+      font-size: 15px;
+      font-weight: bold;
+      padding: 5px 12px;
+      text-decoration: none;
+      text-shadow: 0px -1px 0px #2b665e;
+    }
+
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-bottom: 5px;
+    text-align: center;
+
+    .myButton:hover {
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #202929), color-stop(1, #768d87));
+      background: -moz-linear-gradient(top, #202929 5%%, #768d87 100%%);
+      background: -webkit-linear-gradient(top, #202929 5%%, #768d87 100%%);
+      background: -o-linear-gradient(top, #202929 5%%, #768d87 100%%);
+      background: -ms-linear-gradient(top, #202929 5%%, #768d87 100%%);
+      background: linear-gradient(to bottom, #202929 5%%, #768d87 100%%);
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#202929', endColorstr='#768d87', GradientType=0);
+      background-color: #202929;
+    }
+
+    .myButton:active {
+      position: relative;
+      top: 1px;
+    }
+
+
+    #ConfButton {
+      width: 4%;
+      height: 7%;
+      position: absolute;
+      left: 88%;
+      top: 5%
+    }
+
+    #left_chart {
+      float: left;
+      width: 48%;
+      height: 23%;
+      overflow: auto;
+      margin: 1%;
+    }
+
+    #right_chart {
+      float: right;
+      width: 48%;
+      height: 23%;
+      overflow: auto;
+      margin: 1%;
+    }
+
+    .Button {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px;
+      cursor: pointer;
+      position: absolute;
+      width: 15%;
+      height: 10%;
+      left: 68%;
+      top: 40%
+    }
+  </style>
+
+</head>
+
+<body>
+  <h2>Monitoramento Bomba d'Agua</h2>
+
+  <button id="motorButton" class="Button" onclick="toggleRelay()">Motor</button>
+
+  <div id="ConfButton">
+    <form action="/config" method="get">
+      <button class="myButton" type="submit">Config</button>
+    </form>
+  </div>
+
+  <div id="chart-motor" class="container" style="left:30%; width: 48%; margin: 1%"></div>
+  <div id="left_chart">
+    <div id="chart-temperature" class="container"></div>
+  </div>
+  <div id="right_chart">
+    <div id="chart-vibration" class="container"></div>
+  </div>
+</body>
+<script>
+  //#330033
+  var minutes = 1000 * 60;
+  var hours = minutes * 60;
+
+  function toggleRelay() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        var relayState = parseInt(this.responseText);
+        if (relayState == 1) {
+          document.getElementById("motorButton").style.backgroundColor = "#4CAF50";
+        }
+        else {
+          document.getElementById("motorButton").style.backgroundColor = "#e71010";
+        }
+      }
+    };
+    xhttp.open("GET", "/toogleRelay", true);
+    xhttp.send();
+  }
+
+  var chartM = new Highcharts.Chart({
+    chart: { renderTo: 'chart-motor' },
+    title: { text: 'Motor estado' },
+    series: [{
+      showInLegend: false,
+      data: []
+    }],
+    plotOptions: {
+      line: {
+        animation: false,
+        dataLabels: { enabled: false }
+      }
+    },
+    xAxis: {
+      type: 'datetime',
+      dateTimeLabelFormats: { second: '%H:%M:%S' }
+    },
+    yAxis: {
+      title: { text: 'ON/OFF' }
+    },
+    credits: { enabled: false }
+  });
+  setInterval(function () {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        var x = (new Date()).getTime() - (3 * hours),
+          y = parseInt(this.responseText);
+        //console.log(this.responseText);
+        if (chartM.series[0].data.length > 200) {
+          chartM.series[0].addPoint([x, y], true, true, true);
+        } else {
+          chartM.series[0].addPoint([x, y], true, false, true);
+        }
+
+        if (y == 1) {
+          document.getElementById("motorButton").style.backgroundColor = "#4CAF50";
+        }
+        else {
+          document.getElementById("motorButton").style.backgroundColor = "#e71010";
+        }
+      }
+    };
+    xhttp.open("GET", "/motorStat", true);
+    xhttp.send();
+  }, 10000); //Time Colection
+
+  var chartT = new Highcharts.Chart({
+    chart: { renderTo: 'chart-temperature' },
+    title: { text: 'Temperature' },
+    series: [{
+      showInLegend: false,
+      data: []
+    }],
+    plotOptions: {
+      line: {
+        animation: false,
+        dataLabels: { enabled: false }
+      },
+      series: { color: '#059e8a' }
+    },
+    xAxis: {
+      type: 'datetime',
+      dateTimeLabelFormats: { second: '%H:%M:%S' }
+    },
+    yAxis: {
+      title: { text: 'Temperature (Celsius)' }
+      //title: { text: 'Temperature (Fahrenheit)' }
+    },
+    credits: { enabled: false }
+  });
+  setInterval(function () {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        var x = (new Date()).getTime() - (3 * hours),
+          y = parseFloat(this.responseText);
+        //console.log(this.responseText);
+        if (chartT.series[0].data.length > 400) {
+          chartT.series[0].addPoint([x, y], true, true, true);
+        } else {
+          chartT.series[0].addPoint([x, y], true, false, true);
+        }
+      }
+    };
+    xhttp.open("GET", "/temp", true);
+    xhttp.send();
+  }, 5000);
+
+  var chartA = new Highcharts.Chart({
+    chart: { renderTo: 'chart-vibration' },
+    title: { text: 'Vibration' },
+    series: [{
+      // showInLegend: false,
+      name: 'Axis x',
+      data: []
+    },
+    {
+      // showInLegend: false,
+      name: 'Axis y',
+      data: []
+    },
+    {
+      // showInLegend: false,
+      name: 'Axis z',
+      data: []
+    }],
+    plotOptions: {
+      line: {
+        animation: false,
+        dataLabels: { enabled: false }
+      }
+    },
+    xAxis: {
+      type: 'datetime',
+      dateTimeLabelFormats: { second: '%H:%M:%S' }
+    },
+    yAxis: {
+      title: { text: 'Acceleration (g)' }
+    },
+    credits: { enabled: false }
+  });
+  setInterval(function () {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        var x = (new Date()).getTime() - (3 * hours);
+        var y=[];
+        var data = this.responseText.split(",");
+
+        for (var i=0; i < data.length; i++) {
+          y[i] = parseFloat(data[i]);
+        }
+        //console.log(this.responseText);
+        if (chartA.series[0].data.length > 2000) {
+          chartA.series[0].addPoint([x, y[0]], false, true, true);
+          chartA.series[1].addPoint([x, y[1]], false, true, true);
+          chartA.series[2].addPoint([x, y[2]], true,  true, true);
+        } else {
+          chartA.series[0].addPoint([x, y[0]], false, false, true);
+          chartA.series[1].addPoint([x, y[1]], false, false, true);
+          chartA.series[2].addPoint([x, y[2]], true,  false, true);
+        }
+      }
+    };
+    xhttp.open("GET", "/accel", true);
+    xhttp.send();
+  }, 1000); //Time Colection
+
+// function onFirstLoad() {
+//   document.getElementById("motorButton").style.backgroundColor="#330033";
+//   var x = (new Date()).getTime() - (3*hours),
+//   y = [1.2 , 1.5, 0 , 0.5, 2.1, -1, 2];
+
+//   for (var j=0; j<10; j++ )  { 
+//     for( var i in y)  {
+//       chartA.series[0].addPoint([x-(1000*(i+(j*7))), y[i]], false, false, true);
+//     }
+//   }
+//   chartA.redraw();
+// }
+
+// onFirstLoad();
+
+//////////////////////Teste//////////////////////
+// var dataString = '1.2 , 1.5, 0';
+// var data = dataString.split(",");
+// var y=[];
+
+// for (var i=0; i < data.length; i++) {
+//   y[i] = parseFloat(data[i]);
+// }
+
+// var x = (new Date()).getTime() - (3*hours);
+// // var y = [1.2 , 1.5, 0 , 0.5, 2.1, -1, 2];
+// chartA.series[0].addPoint([x, y[0]], false, false, true);
+// chartA.series[1].addPoint([x, y[1]], false, false, true);
+// chartA.series[2].addPoint([x, y[2]], true, false, true);
+
+/////////////////////////////////////////////////
+
+</script>
+
+</html>
