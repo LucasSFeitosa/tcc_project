@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * tcc_project
+ * ESP-IDF MQTT API
+ *
+ * Copyright (c) 2021 Lucas Feitosa <https://github.com/LucasSFeitosa/tcc_project>\n
+ *
+ * MIT Licensed as described in the file LICENSE
+ *******************************************************************************/
+
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/semphr.h"

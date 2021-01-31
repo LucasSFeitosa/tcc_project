@@ -1,3 +1,11 @@
+/*******************************************************************************
+ * tcc_project
+ * ESP-IDF SPI library for acceleration and temperature read from GY-91 board (BMP280 & MPU9250)
+ *
+ * Copyright (c) 2021 Lucas Feitosa <https://github.com/LucasSFeitosa/tcc_project>\n
+ *
+ * MIT Licensed as described in the file LICENSE
+ *******************************************************************************/
 #ifndef _BMP_MPU_h_
 #define _BMP_MPU_h_
 

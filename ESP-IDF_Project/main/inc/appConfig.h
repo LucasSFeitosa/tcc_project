@@ -1,3 +1,11 @@
+/*******************************************************************************
+ * tcc_project
+ * ESP-IDF NVS API
+ *
+ * Copyright (c) 2021 Lucas Feitosa <https://github.com/LucasSFeitosa/tcc_project>\n
+ *
+ * MIT Licensed as described in the file LICENSE
+ *******************************************************************************/
 #ifndef APP_CONFIG_H_
 #define APP_CONFIG_H_
 

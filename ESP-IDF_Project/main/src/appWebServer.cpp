@@ -1,3 +1,11 @@
+/*******************************************************************************
+ * tcc_project
+ * ESP-IDF Web Server Project
+ *
+ * Copyright (c) 2021 Lucas Feitosa <https://github.com/LucasSFeitosa/tcc_project>\n
+ *
+ * MIT Licensed as described in the file LICENSE
+ *******************************************************************************/
 #include "string.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
