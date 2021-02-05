@@ -3,4 +3,5 @@ Projeto do Trabalho de Conclusão de Curso (TCC) no IFPB
 
 ## Resumo
 
-###Abstract
+## Abstract
+This project aims to demonstrate the development of an IoT prototype for a single-phase mo-tor automation system, with a remote interface for control and monitoring. In order to presentan alternative solution to the existing systems, which allows real-time monitoring of the ma-chine’s temperature and vibration, allowing the observation and analysis of operating patternsand anomaly detection. The proposed system was developed with an ESP32 development mod-ule for system control, a relay module for load activation and a GY-91 module that has built-in,the BMP280 and MPU9250 chips, which have the ability to measure temperature and accelera-tion respectively. For the system monitoring interface, ESP32 was used as a WEB Server, con-necting to the local WIFI and generating a WEB page that can be accessed through a browser,which allows real-time monitoring of the motor’s logical state , the vibration measured in theform of acceleration and temperature, in addition to the possible manual control of turning thesystem on and off. It is possible to observe with the system, the detection of behavior patternsof an equipment, through some analyzes with simulation of different cases with external inter-ference, observing the differences in the vibration and temperature behavior.
